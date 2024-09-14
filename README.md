@@ -11,11 +11,14 @@ This project is the backend part of the tracking tutoring project.
 
 ## Technologies
 
-* [Laravel](https://laravel.com/): Version 10.8 
+* [Laravel](https://laravel.com/): Version ^10.10
 
 ## Project Team
 
-- [Henry Ibrahima Vincent Coly](https://gitlab.com/VICH7)
+- [Henry Ibrahima Vincent Coly](https://github.com/devOFcentury)
+- [Alpha Oumar Barry](https://github.com/alphaoumar9231)
+- [Abdoul Niang](https://github.com/abdoulniang2000)
+- [Papa Alioune Gueye](https://github.com/linodev19)
 
 ## Installation
 
