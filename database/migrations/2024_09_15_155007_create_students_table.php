@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('firstname', 100);
             $table->string('lastname', 100);
-            // $table->string('registration_number')->unique();
             $table->string('email')->unique();
-            $table->string('phone_number', 100)->unique();
-            $table->enum('role', ['tracking', 'tutor'])->default('tutor');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('group_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->engine('InnoDB');
         });
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('students');
     }
 };
