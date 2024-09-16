@@ -19,6 +19,23 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+    
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes() 
+    {
+        Route::middleware('api')
+            ->prefix('api/v1')
+            ->group(base_path('routes/api_v1.php'));
+
+        // other future routes here as for example v2 api routes
+    }
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
@@ -35,6 +52,8 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            $this->mapApiRoutes();
         });
     }
 }
