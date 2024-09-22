@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->foreignId('marked_by')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->enum('status', ['effectuee', 'non_effectuee'])->default('non_effectuee');
+            $table->enum('status', ['effectuee', 'non_effectuee'])->nullable();
             $table->timestamps();
             $table->engine('InnoDB');
         });
