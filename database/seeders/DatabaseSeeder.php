@@ -124,9 +124,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Génération automatique des séances pour chaque affectation
-        $generate_session_instance1 = new generateSessions($affectation1, $module1);
-        $generate_session_instance2 = new generateSessions($affectation2, $module2);
-        $generate_session_instance3 = new generateSessions($affectation3, $module1);
+        $generate_session_instance1 = new generateSessions($affectation1->tutor_id, $module1);
+        $generate_session_instance2 = new generateSessions($affectation2->tutor_id, $module2);
+        $generate_session_instance3 = new generateSessions($affectation3->tutor_id, $module1);
         
         $generate_session_instance1->generateSessionsForModule();
         $generate_session_instance2->generateSessionsForModule();

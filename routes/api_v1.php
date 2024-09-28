@@ -37,9 +37,10 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
     });
 
     Route::controller(AffectationController::class)->group(function() {
-        
-        Route::post('affectations', 'store');
-        Route::put('affectations/{affectation}', 'update');
+        Route::post('affectations/tutor', 'assignTutor');
+        Route::delete('affectations/tutor', 'deleteTutorAssignment');
+        Route::post('affectations/groups', 'store');
+        Route::delete('affectations/groups', 'destroy');
         
     });
 

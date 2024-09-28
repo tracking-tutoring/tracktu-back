@@ -53,8 +53,6 @@ class ModuleController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'weeks_duration' => ['required', 'numeric',],
-            'group_id' => ['numeric',],
-            'tutor_id' => ['numeric',],
 
         ]);
 
@@ -70,22 +68,6 @@ class ModuleController extends Controller
         $module->user_id = $request->user()->id;
 
         $module->save();
-
-        // $module->tutors()->attach($request->tutor_id, [
-        //     'assigned_by' => $request->user()->id,
-        // ]);
-
-
-        // $affectation = new Affectation();
-        // $affectation->group_id = $request->group_id;
-        // $affectation->module_id = $module->id;
-        // $affectation->tutor_id = $request->tutor_id;
-        // $affectation->assigned_by = $request->user()->id;
-
-        // $affectation->save();
-
-        // $generate_session_instance = new generateSessions($affectation, $module);
-        // $generate_session_instance->generateSessionsForModule();
 
         return response()->json([
             "{$this->msg}" => 'Module enregistré.',
