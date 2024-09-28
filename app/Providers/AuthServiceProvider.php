@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\Response;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +25,28 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('create', function (User $user) {
+            return $user->role == 'tracking'
+            ? Response::allow()
+            : Response::deny('Vous devez être membre de l\'équipe de tracking.');
+        });
+
+        Gate::define('update', function (User $user) {
+            return $user->role == 'tracking'
+            ? Response::allow() 
+            : Response::deny('Vous n\'êtes pas autorisé à mettre à jour.');
+        });
+
+        Gate::define('delete', function (User $user) {
+            return $user->role == 'tracking'  
+            ? Response::allow() 
+            : Response::deny('Vous n\'êtes pas autorisé à supprimer.');
+        });
+
+        // Gate::define('show', function (User $user, $model) {
+        //     return $user->id == $model->user_id  
+        //     ? Response::allow() 
+        //     : Response::deny('Vous n\'êtes pas autorisé à voir.');
+        // });
     }
 }

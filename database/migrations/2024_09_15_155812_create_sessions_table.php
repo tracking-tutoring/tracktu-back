@@ -17,11 +17,11 @@ return new class extends Migration
             // $table->timestamp('session_date')->nullable();
             $table->foreignId('module_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tutor_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('group_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('group_id')->constrained()->cascadeOnDelete();
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->foreignId('marked_by')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->enum('status', ['effectuee', 'non_effectuee'])->default('non_effectuee');
+            $table->enum('status', ['effectuee', 'non_effectuee'])->nullable();
             $table->timestamps();
             $table->engine('InnoDB');
         });
