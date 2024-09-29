@@ -30,13 +30,7 @@ class AffectationController extends Controller
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    
 
     public function assignTutor(Request $request)
     {
@@ -195,13 +189,6 @@ class AffectationController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
 
     /**
