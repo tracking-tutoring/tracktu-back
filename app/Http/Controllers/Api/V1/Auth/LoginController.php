@@ -40,7 +40,7 @@ class LoginController extends Controller
 
         $token = $user->createToken($request->email)->plainTextToken;
 
-        return response(compact('user', 'token') + ['exp' => now()->addHours(6)], 200);
+        return response(compact('user', 'token'), 200);
     }
 
     public function logout(Request $request) {
