@@ -53,18 +53,23 @@ class User extends Authenticatable
     // Pour le tuteur: récupérer ses séances
     public function sessions(): HasMany
     {
-        return $this->hasMany(Session::class);
+        return $this->hasMany(Session::class, 'tutor_id');
     }
 
     // Pour le tuteur: récupérer les groupes associés
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class, 'affectations')->withPivot('module_id');
+        return $this->belongsToMany(Group::class, 'affectations', 'tutor_id', 'group_id')->withPivot('module_id');
     }
 
     // Pour le tuteur: récupérer ses modules associés
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class, 'module_tutor')->withPivot('assigned_by');
+        return $this->belongsToMany(Module::class, 'module_tutor', 'tutor_id', 'module_id')->withPivot('assigned_by');
     }
+
+    // public function tutors()
+    // {
+    //     return $this->belongsToMany(User::class, 'module_tutor', 'module_id', 'tutor_id')->withPivot('assigned_by');
+    // }
 }

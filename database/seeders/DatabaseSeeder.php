@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Helper\generateSessions;
 use App\Models\Affectation;
 use App\Models\Group;
 use App\Models\Module;
@@ -16,22 +17,22 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    // Méthode pour générer automatiquement les séances pour un module
-    private function genererSeancesPourModule(Affectation $affectation, Module $module, User $tracking)
-    {
-        // Générer une séance par semaine pendant la durée du module
-        for ($i = 0; $i < $module->weeks_duration; $i++) {
-            Session::create([
-                'module_id' => $module->id,
-                'tutor_id' => $affectation->tutor_id,
-                'group_id' => $affectation->group_id,
-                'marked_by' => $tracking->id,
-                'start_time' => Carbon::now()->addWeeks($i),  // Séances hebdomadaires
-                'end_time' => Carbon::now()->addWeeks($i)->addHours(2),
-                'status' => 'non_effectuee'  // Par défaut, la séance est non effectuée
-            ]);
-        }
-    }
+    // // Méthode pour générer automatiquement les séances pour un module
+    // private function generateSessionsForModule(Affectation $affectation, Module $module, User $tracking)
+    // {
+    //     // Générer une séance par semaine pendant la durée du module
+    //     for ($i = 0; $i < $module->weeks_duration; $i++) {
+    //         Session::create([
+    //             'module_id' => $module->id,
+    //             'tutor_id' => $affectation->tutor_id,
+    //             'group_id' => $affectation->group_id,
+    //             'marked_by' => $tracking->id,
+    //             'start_time' => Carbon::now()->addWeeks($i),  // Séances hebdomadaires
+    //             'end_time' => Carbon::now()->addWeeks($i)->addHours(2),
+    //             'status' => 'non_effectuee'  // Par défaut, la séance est non effectuée
+    //         ]);
+    //     }
+    // }
 
     // Méthode pour incrémenter les heures de séance après validation par l'équipe de tracking
     private function incrementeHeuresSeances()
@@ -123,9 +124,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Génération automatique des séances pour chaque affectation
-        $this->genererSeancesPourModule($affectation1, $module1, $tracking1);
-        $this->genererSeancesPourModule($affectation2, $module2, $tracking1);
-        $this->genererSeancesPourModule($affectation3, $module1, $tracking1);
+        $generate_session_instance1 = new generateSessions($affectation1->tutor_id, $module1);
+        $generate_session_instance2 = new generateSessions($affectation2->tutor_id, $module2);
+        $generate_session_instance3 = new generateSessions($affectation3->tutor_id, $module1);
+        
+        $generate_session_instance1->generateSessionsForModule();
+        $generate_session_instance2->generateSessionsForModule();
+        $generate_session_instance3->generateSessionsForModule();
         
     }
 }
