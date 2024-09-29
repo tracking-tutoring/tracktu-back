@@ -49,10 +49,10 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
     });
 
     Route::controller(UserController::class)->group(function() {
-        Route::get('users/tutor', 'getTutors');
-        Route::get('users/tutor/{tutor}', 'getTutor');
-        Route::post('users/tutor', 'createTutor');
-        Route::delete('users/tutor/{tutor}', 'deleteTutor');
+        Route::get('users/{userRole}', 'getUsers');
+        Route::get('users/{userRole}/{userid}', 'getUser');
+        Route::post('users', 'createUser');
+        Route::delete('users/{userId}', 'deleteUser');
     });
 
     Route::controller(StatisticController::class)->group(function() {
