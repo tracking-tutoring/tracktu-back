@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
 
 class UserController extends Controller
 {
@@ -24,30 +26,46 @@ class UserController extends Controller
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
     }
 
-    public function getTutors()
+    public function getUsers(string $userRole)
     {
+        $availableUserRoles = ['tracking', 'tutor',];
+
+        if (!in_array($userRole, $availableUserRoles)) {
+            throw new InvalidArgumentException('Invalid user type(role) provided');
+        }
+
+
         return response()->json([
-            "{$this->data}" => User::where('role', 'tutor')->paginate(),
+            "{$this->data}" => User::where('role', $userRole)->paginate(),
         ]);
+
     }
 
-    public function getTutor(int $id)
+    public function getUser(string $userRole, int $userId)
     {
+        $availableUserRoles = ['tracking', 'tutor',];
 
-        $user = User::findOrFail($id);
-
-        if ($user->role == 'tracking') {
-            return response()->json([
-                "{$this->msg}" => 'interdit, cet utilisateur n\'est pas un tuteur.'
-            ], 403);
+        if (!in_array($userRole, $availableUserRoles)) {
+            throw new InvalidArgumentException('Invalid user type(role) provided');
         }
+
+        $user_query = User::where('id', $userId);
+
+        if (!$user_query->exists()) {
+            return response()->json([
+                "{$this->msg}" => "pas d'utilisateur correspondant",
+            ], 404);
+        }
+
+        $user = $user_query->first();
 
         return response()->json([
             "{$this->data}" => $user
         ]);
+
     }
 
-    public function createTutor(Request $request)
+    public function createUser(Request $request)
     {
         $response = Gate::inspect('create');
 
@@ -62,6 +80,7 @@ class UserController extends Controller
             'lastname' => ['required', 'string', 'min:4'],
             'phone_number' => ['required', 'numeric', 'min:9', 'unique:App\Models\User,phone_number'],
             'email' => ['required', 'email:rfc,dns', 'unique:' . User::class],
+            'role' => ['required', Rule::in(['tracking', 'tutor'])],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -76,17 +95,17 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->phone_number = $request->phone_number;
         $user->email = $request->email;
-        $user->role = 'tutor';
+        $user->role = $request->role;
         $user->password = Hash::make($request->password);
 
         $user->save();
 
         return response()->json([
-            "{$this->msg}" => 'Tuteur créé avec succès.'
+            "{$this->msg}" => 'Utilisateur créé avec succès.'
         ]);
     }
 
-    public function deleteTutor(User $user)
+    public function deleteUser(int $userId)
     {
         $response = Gate::inspect('delete');
 
@@ -96,16 +115,21 @@ class UserController extends Controller
             ], 403);
         };
 
-        if ($user->role == 'tracking') {
+        $user_query = User::where('id', $userId);
+
+        if (!$user_query->exists()) {
             return response()->json([
-                "{$this->msg}" => 'interdit, cet utilisateur n\'est pas un tuteur.'
-            ], 403);
+                "{$this->msg}" => "pas d'utilisateur correspondant",
+            ], 404);
         }
+
+        $user = $user_query->first();
 
         $user->delete();
 
         return response()->json([
-            "{$this->msg}" => 'Tuteur supprimé.'
+            "{$this->msg}" => 'Utilisateur supprimé.'
         ]);
     }
+
 }

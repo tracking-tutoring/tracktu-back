@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\ModuleController;
 use App\Http\Controllers\Api\V1\SessionController;
+use App\Http\Controllers\Api\V1\StatisticController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,13 +49,17 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
     });
 
     Route::controller(UserController::class)->group(function() {
-        Route::get('users/tutor', 'getTutors');
-        Route::get('users/tutor/{tutor}', 'getTutor');
-        Route::post('users/tutor', 'createTutor');
-        Route::delete('users/tutor/{tutor}', 'deleteTutor');
+        Route::get('users/{userRole}', 'getUsers');
+        Route::get('users/{userRole}/{userid}', 'getUser');
+        Route::post('users', 'createUser');
+        Route::delete('users/{userId}', 'deleteUser');
     });
 
-  
+    Route::controller(StatisticController::class)->group(function() {
+        Route::get('statistics/for-cards', 'getStatisticsForCards');
+        Route::get('statistics/hours-done/{module}/{id}', 'getHoursDone');
+        Route::get('statistics/hours-not-done/{module}/{id}', 'getHoursNotDone');
+    });
     
 });
 
