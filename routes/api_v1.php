@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\ModuleController;
 use App\Http\Controllers\Api\V1\SessionController;
+use App\Http\Controllers\Api\V1\StatisticController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,11 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
         Route::delete('users/tutor/{tutor}', 'deleteTutor');
     });
 
-  
+    Route::controller(StatisticController::class)->group(function() {
+        Route::get('statistics/for-cards', 'getStatisticsForCards');
+        Route::get('statistics/hours-done/{module}/{id}', 'getHoursDone');
+        Route::get('statistics/hours-not-done/{module}/{id}', 'getHoursNotDone');
+    });
     
 });
 

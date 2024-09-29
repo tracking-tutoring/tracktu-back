@@ -20,7 +20,7 @@ class Module extends Model
 
     public function tutors()
     {
-        return $this->belongsToMany(User::class, 'module_tutor', 'module_id', 'tutor_id')->withPivot('assigned_by');
+        return $this->belongsToMany(User::class, 'module_tutor', 'module_id', 'tutor_id');
     }
 
     public function groups() {

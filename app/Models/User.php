@@ -65,7 +65,7 @@ class User extends Authenticatable
     // Pour le tuteur: récupérer ses modules associés
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class, 'module_tutor', 'tutor_id', 'module_id')->withPivot('assigned_by');
+        return $this->belongsToMany(Module::class, 'module_tutor', 'tutor_id', 'module_id');
     }
 
     // public function tutors()
