@@ -53,7 +53,7 @@ class User extends Authenticatable
     // Pour le tuteur: récupérer ses séances
     public function sessions(): HasMany
     {
-        return $this->hasMany(Session::class);
+        return $this->hasMany(Session::class, 'tutor_id');
     }
 
     // Pour le tuteur: récupérer les groupes associés

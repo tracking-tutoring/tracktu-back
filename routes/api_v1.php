@@ -34,7 +34,8 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
         Route::get('sessions', 'index');
         Route::post('sessions', 'store');
         Route::get('sessions/{session}', 'show');
-        Route::put('sessions/{session}', 'update');
+        Route::get('sessions/tutor/{tutor}/{module?}', 'showtutorSessions');
+        // Route::put('sessions/{session}', 'update'); // * Pour l'instant on a pas besoin de mettre à jour une session
         Route::put('sessions/mark/{session}', 'markSession');
     });
 
