@@ -62,6 +62,14 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
         Route::get('statistics/hours-done/{module}/{id}', 'getHoursDone');
         Route::get('statistics/hours-not-done/{module}/{id}', 'getHoursNotDone');
     });
+
+    Route::controller(GroupController::class)->group(function() {
+        Route::get('groups', 'index');
+        Route::post('groups', 'store');
+        Route::get('groups/{group}', 'show');
+        Route::put('groups/{group}', 'update');
+        Route::delete('groups/{group}', 'destroy');
+    });
     
 });
 
