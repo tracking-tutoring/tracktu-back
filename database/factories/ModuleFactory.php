@@ -31,6 +31,7 @@ class ModuleFactory extends Factory
 
         return [
             'name' => $randomName,
+            'description' => fake()->text(),
         ];
     }
 }

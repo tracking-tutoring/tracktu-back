@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AffectationController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\GroupController;
 use App\Http\Controllers\Api\V1\ModuleController;
 use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\StatisticController;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// routes pour l'équipe de tracking
 Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->group(function() {
     Route::controller(ModuleController::class)->group(function() {
           Route::get('modules', 'index');
@@ -63,10 +65,21 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
     
 });
 
+// route pour l'admin
+Route::middleware(['auth:sanctum', 'checkRole:tutor'])->prefix('tutor')->group(function() {
+    Route::controller(ModuleController::class)->group(function() {
+        Route::get('modules/my-modules', 'getTutorModules'); 
+    });
 
-// Route::middleware(['auth:sanctum', 'checkRole:tutor'])->prefix('tutor')->group(function (Request $request) {
+    Route::controller(SessionController::class)->group(function() {
+        Route::get('sessions/my-sessions/{moduleId?}', 'getTutorSessions'); 
+    });
+
+    Route::controller(GroupController::class)->group(function() {
+        Route::get('groups/my-groups/{moduleId?}', 'getTutorgroups'); 
+    });
     
-// });
+});
 
 
 Route::post('register', [RegisterController::class, 'store']);

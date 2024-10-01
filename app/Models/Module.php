@@ -12,11 +12,20 @@ class Module extends Model
     protected $fillable = [
         'name',
         'weeks_duration',
+        'description',
+        'picture',
         'user_id',
-        // 'hours',
-        // 'hour_completed',
-        // 'hour_not_completed',
     ];
+
+    // Générer l'URL complète de l'image
+    public function getImageUrl()
+    {
+        if ($this->picture) {
+            return asset('storage/' . $this->picture);
+        }
+
+        return null; // Si aucune image n'est définie
+    }
 
     public function tutors()
     {

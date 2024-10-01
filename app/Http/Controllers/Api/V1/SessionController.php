@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use function PHPUnit\Framework\isNull;
+
 class SessionController extends Controller
 {
 
@@ -184,6 +186,26 @@ class SessionController extends Controller
         return response()->json([
             "{$this->data}" => $sessions
         ]);        
+
+    }
+
+    public function getTutorSessions(?int $moduleId = null)
+    {
+         /** @var \App\Models\User $tutor **/
+        $tutor = auth()->user();
+        
+        if (is_null($moduleId)) {
+            $sessions = $tutor->sessions()->with('module')->get();
+            return response()->json([
+                "{$this->data}" => $sessions
+            ]);
+        }
+
+        $sessions = $tutor->sessions()->with('module')->where('module_id', $moduleId)->get();
+
+        return response()->json([
+            "{$this->data}" => $sessions
+        ]);
 
     }
 }

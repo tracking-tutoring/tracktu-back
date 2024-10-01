@@ -29,7 +29,6 @@ class AffectationController extends Controller
         $this->data = config('utilities.httpKeyResponse.data');
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
     }
-
     
 
     public function assignTutor(Request $request)
@@ -188,7 +187,6 @@ class AffectationController extends Controller
             "{$this->msg}" => 'Affectation réussie.',
         ]);
     }
-
 
 
     /**

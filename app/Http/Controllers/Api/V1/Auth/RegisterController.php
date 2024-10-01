@@ -23,8 +23,8 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'firstname' => ['required', 'string', 'min:4'],
-            'lastname' => ['required', 'string', 'min:4'],
+            'firstname' => ['required', 'string', 'min:2'],
+            'lastname' => ['required', 'string', 'min:2'],
             'phone_number' => ['required', 'numeric', 'min:9', 'unique:App\Models\User,phone_number'],
             'email' => ['required', 'email:rfc,dns', 'unique:'. User::class],
             'role' => ['required', Rule::in(['tracking', 'tutor'])],

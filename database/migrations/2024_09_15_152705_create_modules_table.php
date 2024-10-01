@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->integer('weeks_duration')->default(10);
-            // $table->integer('hours')->default(100);
-            // $table->integer('hour_completed')->default(0);
-            // $table->integer('hour_not_completed')->default(0);
+            $table->tinyText('description');
+            $table->string('picture')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->engine('InnoDB');
