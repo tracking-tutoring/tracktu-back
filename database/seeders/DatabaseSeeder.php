@@ -48,6 +48,8 @@ class DatabaseSeeder extends Seeder
                         ->has(Student::factory()->count(6))
                         ->create();
 
+        $students = Student::factory()->count(30)->create();
+
 
          // Affectation des tuteurs aux modules et groupes
          $affectation1 = Affectation::create([
