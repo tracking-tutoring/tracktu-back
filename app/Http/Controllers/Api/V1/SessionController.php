@@ -50,65 +50,6 @@ class SessionController extends Controller
         ]);
     }
 
-    // * Pour l'instant on a pas besoin de mettre à jour une session
-    // public function update(Request $request, Session $session)
-    // {
-    //     $response = Gate::inspect('update');
-
-    //     if (!$response->allowed()) {
-    //         return response()->json([
-    //             "{$this->msg}" => $response->message(),
-    //         ], 403);
-    //     };
-
-    //     $validator = Validator::make($request->all(), [
-    //         'module_id' => ['numeric'],
-    //         'tutor_id' => ['numeric'],
-    //         // 'group_id' => ['numeric'],
-    //         'start_time' => ['date_format:Y-m-d H:i:s'],
-    //         'end_time' => ['date_format:Y-m-d H:i:s'],
-    //         'marked_by' => ['numeric'],
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             "{$this->validation_errors}" => $validator->errors(),
-    //         ], 422);
-    //     }
-
-    //     if ($request->has('module_id')) {
-    //         $session->module_id = $request->module_id;
-    //     }
-
-    //     if ($request->has('tutor_id')) {
-    //         $session->tutor_id = $request->tutor_id;
-    //     }
-
-    //     // if ($request->has('group_id')) {
-    //     //     $session->group_id = $request->group_id;
-    //     // }
-
-    //     if ($request->has('start_time')) {
-    //         $session->start_time = $request->start_time;
-    //     }
-
-    //     if ($request->has('end_time')) {
-    //         $session->end_time = $request->end_time;
-    //     }
-
-    //     if ($request->has('marked_by')) {
-    //         $session->marked_by = $request->marked_by;
-    //     }
-
-    //     if ($session->isDirty()) {
-    //         $session->save();
-
-    //         return response()->json([
-    //             "{$this->msg}" => 'Session mise à jour avec succès.'
-    //         ]);
-    //     }
-    // }
-
 
     public function markSession(Request $request, Session $session)
     {
