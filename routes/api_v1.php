@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\GroupController;
 use App\Http\Controllers\Api\V1\ModuleController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SessionController;
 use App\Http\Controllers\Api\V1\StatisticController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // routes pour l'équipe de tracking
-Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->group(function() {
+Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('tracking')->group(function() {
     Route::controller(ModuleController::class)->group(function() {
           Route::get('modules', 'index');
           Route::post('modules', 'store');
@@ -62,11 +63,25 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking'])->prefix('tracking')->g
         Route::get('statistics/hours-done/{module}/{id}', 'getHoursDone');
         Route::get('statistics/hours-not-done/{module}/{id}', 'getHoursNotDone');
     });
+
+    Route::controller(GroupController::class)->group(function() {
+        Route::get('groups', 'index');
+        Route::post('groups', 'store');
+        Route::get('groups/{group}', 'show');
+        Route::put('groups/{group}', 'update');
+        Route::delete('groups/{group}', 'destroy');
+    });
+
+    Route::controller(ProfileController::class)->group(function() {
+        Route::get('profile', 'index');
+        Route::put('profile', 'update');
+        Route::put('profile/update-password', 'updatePassword');
+    });
     
 });
 
 // route pour l'admin
-Route::middleware(['auth:sanctum', 'checkRole:tutor'])->prefix('tutor')->group(function() {
+Route::middleware(['auth:sanctum', 'checkRole:tutor', 'tokenExp'])->prefix('tutor')->group(function() {
     Route::controller(ModuleController::class)->group(function() {
         Route::get('modules/my-modules', 'getTutorModules'); 
     });

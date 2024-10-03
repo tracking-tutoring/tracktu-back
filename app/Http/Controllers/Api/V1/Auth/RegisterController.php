@@ -26,7 +26,7 @@ class RegisterController extends Controller
             'firstname' => ['required', 'string', 'min:2'],
             'lastname' => ['required', 'string', 'min:2'],
             'phone_number' => ['required', 'numeric', 'min:9', 'unique:App\Models\User,phone_number'],
-            'email' => ['required', 'email:rfc,dns', 'unique:'. User::class],
+            'email' => ['required', 'email', 'unique:'. User::class],
             'role' => ['required', Rule::in(['tracking', 'tutor'])],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
