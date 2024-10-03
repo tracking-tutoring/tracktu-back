@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
@@ -41,7 +44,10 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        $groups = Group::paginate();
+        return response()->json([
+            "{$this->data}" => $groups
+        ]);
     }
 
     /**
@@ -49,7 +55,33 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = Gate::inspect('create');
+
+        if (!$response->allowed()) {
+            return response()->json([
+                "{$this->msg}" => $response->message(),
+            ], 403);
+        };
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "{$this->validation_errors}" => $validator->errors(),
+            ], 422);
+        }
+
+        $group = new Group();
+        $group->name = $request->name;
+        $group->user_id = $request->user()->id;
+
+        $group->save();
+
+        return response()->json([
+            "{$this->msg}" => 'Groupe créé avec succès.',
+        ]);
     }
 
     /**
@@ -57,22 +89,63 @@ class GroupController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $group = Group::findOrFail($id);
+
+        return response()->json([
+            "{$this->data}" => $group
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Group $group)
     {
-        //
+        $response = Gate::inspect('update');
+
+        if (!$response->allowed()) {
+            return response()->json([
+                "{$this->msg}" => $response->message(),
+            ], 403);
+        };
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "{$this->validation_errors}" => $validator->errors(),
+            ], 422);
+        }
+
+        $group->name = $request->name;
+        
+        $group->save();
+
+        return response()->json([
+            "{$this->msg}" => 'Groupe mis à jour avec succès.'
+        ]);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Group $group)
     {
-        //
+        $response = Gate::inspect('delete');
+
+        if (!$response->allowed()) {
+            return response()->json([
+                "{$this->msg}" => $response->message(),
+            ], 403);
+        };
+
+        $group->delete();
+
+        return response()->json([
+            "{$this->msg}" => 'Groupe supprimé.'
+        ]);
     }
 }

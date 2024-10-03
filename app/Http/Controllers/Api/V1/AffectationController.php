@@ -8,6 +8,7 @@ use App\Models\Affectation;
 use App\Models\Group;
 use App\Models\Module;
 use App\Models\Session;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,50 @@ class AffectationController extends Controller
         $this->msg = config('utilities.httpKeyResponse.message');
         $this->data = config('utilities.httpKeyResponse.data');
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
+    }
+
+    // TODO faire cette fonctionnalité:  mettre des étudiants dans des groupes
+    public function linkStudentsGroups(Request $request)
+    {
+        $response = Gate::inspect('create');
+
+        if (!$response->allowed()) {
+            return response()->json([
+                "{$this->msg}" => $response->message(),
+            ], 403);
+        };
+
+        $validator = Validator::make($request->all(), [
+            'group_id' => ['required', 'numeric'],
+            'students' => ['required', 'array'],
+            'students.*' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "{$this->validation_errors}" => $validator->errors(),
+            ], 422);
+        }
+
+        $group_query = Group::where('id', $request->group_id);
+
+        if (!$group_query->exists()) {
+            return response()->json([
+                "{$this->msg}" => "pas de Groupe correspondant",
+            ], 404);
+        }
+
+        foreach ($request->students as $value) {
+            $student = Student::findOrFail($value);
+
+            $student->group_id = $request->group_id;
+
+            $student->save();
+        }
+
+        return response()->json([
+            "{$this->msg}" => 'Affectation réussie.',
+        ]);
     }
     
 

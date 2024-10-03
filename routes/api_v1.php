@@ -39,7 +39,6 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('t
         Route::post('sessions', 'store');
         Route::get('sessions/{session}', 'show');
         Route::get('sessions/tutor/{tutor}/{module?}', 'showtutorSessions');
-        // Route::put('sessions/{session}', 'update'); // * Pour l'instant on a pas besoin de mettre à jour une session
         Route::put('sessions/mark/{session}', 'markSession');
     });
 
@@ -47,6 +46,7 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('t
         Route::post('affectations/tutor', 'assignTutor');
         Route::delete('affectations/tutor', 'deleteTutorAssignment');
         Route::post('affectations/groups', 'store');
+        Route::post('affectations/groups/link-students', 'linkStudentsGroups');
         Route::delete('affectations/groups', 'destroy');
         
     });
@@ -71,6 +71,7 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('t
         Route::put('groups/{group}', 'update');
         Route::delete('groups/{group}', 'destroy');
     });
+
 
     Route::controller(ProfileController::class)->group(function() {
         Route::get('profile', 'index');

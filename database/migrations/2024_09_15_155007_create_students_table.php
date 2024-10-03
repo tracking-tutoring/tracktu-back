@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('firstname', 100);
             $table->string('lastname', 100);
             $table->string('email')->unique();
-            $table->foreignId('group_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('group_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->engine('InnoDB');
         });
