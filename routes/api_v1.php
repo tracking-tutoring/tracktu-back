@@ -81,7 +81,7 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('t
     
 });
 
-// route pour l'admin
+// route pour le tutor
 Route::middleware(['auth:sanctum', 'checkRole:tutor', 'tokenExp'])->prefix('tutor')->group(function() {
     Route::controller(ModuleController::class)->group(function() {
         Route::get('modules/my-modules', 'getTutorModules'); 

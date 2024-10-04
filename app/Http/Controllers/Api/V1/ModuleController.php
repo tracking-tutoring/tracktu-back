@@ -26,7 +26,7 @@ class ModuleController extends Controller
     {
         /** @var \App\Models\User $user **/
         $user = auth()->user();
-        $modules = $user->modules;
+        $modules = $user->modules()->with('creator')->get();
         $modules->transform(function ($module) {
             $module->picture = $module->getImageUrl();
             return $module;
@@ -43,7 +43,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        $modules = Module::paginate();
+        $modules = Module::with('creator')->paginate();
         $modules->getCollection()->transform(function ($module) {
             $module->picture = $module->getImageUrl();
             return $module;
@@ -104,7 +104,7 @@ class ModuleController extends Controller
      */
     public function show(int $id)
     {
-        $module = Module::findOrFail($id);
+        $module = Module::with('creator')->findOrFail($id);
 
         return response()->json([
             "{$this->data}" => $module

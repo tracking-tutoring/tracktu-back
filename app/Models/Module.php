@@ -35,5 +35,9 @@ class Module extends Model
     public function groups() {
         return $this->belongsToMany(Group::class, 'affectations')->withPivot('tutor_id', 'assigned_by');
     }
+
+    public function creator() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     
 }

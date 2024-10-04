@@ -113,7 +113,7 @@ class SessionController extends Controller
         }
 
         if (is_null($moduleId)) {
-            $sessions = $user->sessions;
+            $sessions = $user->sessions()->with('module')->get();
             
             return response()->json([
                 "{$this->data}" => $sessions
@@ -122,7 +122,7 @@ class SessionController extends Controller
 
         // $module = Module::findOrFail($moduleId);
 
-        $sessions = $user->sessions()->where('module_id', $moduleId)->get();
+        $sessions = $user->sessions()->where('module_id', $moduleId)->with('module')->get();
 
         return response()->json([
             "{$this->data}" => $sessions
