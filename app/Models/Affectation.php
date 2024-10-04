@@ -21,12 +21,12 @@ class Affectation extends Model
         return $this->belongsTo(Module::class);
     }
 
-    public function groupe()
+    public function group()
     {
         return $this->belongsTo(Group::class);
     }
 
-    public function seances()
+    public function sessions()
     {
         return $this->hasMany(Session::class);
     }

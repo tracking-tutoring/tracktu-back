@@ -31,7 +31,15 @@ class AffectationController extends Controller
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
     }
 
-    // TODO faire cette fonctionnalité:  mettre des étudiants dans des groupes
+    public function index()
+    {
+        $affectations = Affectation::with(['tutor', 'module', 'group'])->get();
+        return response()->json([
+            "{$this->data}" => $affectations
+        ]);
+    }
+
+   
     public function linkStudentsGroups(Request $request)
     {
         $response = Gate::inspect('create');

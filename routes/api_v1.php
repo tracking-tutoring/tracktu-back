@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum', 'checkRole:tracking', 'tokenExp'])->prefix('t
     });
 
     Route::controller(AffectationController::class)->group(function() {
+        Route::get('affectations', 'index');
         Route::post('affectations/tutor', 'assignTutor');
         Route::delete('affectations/tutor', 'deleteTutorAssignment');
         Route::post('affectations/groups', 'store');
