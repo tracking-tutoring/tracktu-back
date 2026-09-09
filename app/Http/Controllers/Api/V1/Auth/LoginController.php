@@ -16,14 +16,14 @@ class LoginController extends Controller
     {
         $this->validation_errors = config('utilities.httpKeyResponse.validation_errors');
     }
-   
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'min:8', 'max:30',],
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 "{$this->validation_errors}" => $validator->errors(),
@@ -31,7 +31,7 @@ class LoginController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
- 
+
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response([
                 "{$this->validation_errors}" => ['credentials' => ['Provided email address or password is incorrect']],

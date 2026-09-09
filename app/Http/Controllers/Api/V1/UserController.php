@@ -79,7 +79,7 @@ class UserController extends Controller
             'firstname' => ['required', 'string', 'min:4'],
             'lastname' => ['required', 'string', 'min:4'],
             'phone_number' => ['required', 'numeric', 'min:9', 'unique:App\Models\User,phone_number'],
-            'email' => ['required', 'email:rfc,dns', 'unique:' . User::class],
+            'email' => ['required',  'unique:' . User::class],
             'role' => ['required', Rule::in(['tracking', 'tutor'])],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
